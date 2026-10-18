@@ -3,6 +3,7 @@ using RaceDay.API.Models;
 
 namespace RaceDay.API.Data
 {
+
     // this class inherits from ef core's DbContext
     // its responsible for taking our c# classes and translating them into sql tables
     public class AppDbContext : DbContext
@@ -18,5 +19,25 @@ namespace RaceDay.API.Data
         public DbSet<Enrolment> Enrolments { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Result> Results { get; set; }
+
+        // this method overrides the default table creation rules to fix the cascade issue
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // prevent cascade delete cycle on the participant foreign key
+            modelBuilder.Entity<Enrolment>()
+                .HasOne(e => e.Participant)
+                .WithMany()
+                .HasForeignKey(e => e.ParticipantId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // prevent cascade delete cycle on the category foreign key
+            modelBuilder.Entity<Enrolment>()
+                .HasOne(e => e.Category)
+                .WithMany()
+                .HasForeignKey(e => e.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
     }
 }
