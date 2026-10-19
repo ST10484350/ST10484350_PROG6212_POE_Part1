@@ -41,3 +41,56 @@ Content-Type: application/json
 ### Test Get Events
 GET http://127.0.0.1:5101/api/Events
 Accept: application/json
+
+### 1. Login as Organiser (To establish session)
+POST http://127.0.0.1:5101/api/Auth/Login
+Content-Type: application/json
+
+{
+  "email": "cassidy@test.com",
+  "password": "Password123!"
+}
+
+### 2. Create Category (Organiser only)
+POST http://127.0.0.1:5101/api/Categories
+Content-Type: application/json
+
+{
+  "eventId": 1,
+  "categoryName": "Senior 10km",
+  "distanceKm": 10.0,
+  "entryFee": 150.00
+}
+
+### 3. Register a New Participant
+POST http://127.0.0.1:5101/api/Auth/Register
+Content-Type: application/json
+
+{
+  "firstName": "Test",
+  "lastName": "Runner",
+  "email": "runner@test.com",
+  "password": "Password123!",
+  "role": "Participant"
+}
+
+### 4. Login as Participant (Switches the session role)
+POST http://127.0.0.1:5101/api/Auth/Login
+Content-Type: application/json
+
+{
+  "email": "runner@test.com",
+  "password": "Password123!"
+}
+
+### 5. Enrol in the Category (Participant only)
+POST http://127.0.0.1:5101/api/Enrolments
+Content-Type: application/json
+
+{
+  "categoryId": 1
+}
+
+### 6. View My Enrolments
+GET http://127.0.0.1:5101/api/Enrolments/my-enrolments
+Accept: application/json
