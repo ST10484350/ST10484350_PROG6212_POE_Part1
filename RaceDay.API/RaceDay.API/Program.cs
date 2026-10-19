@@ -34,7 +34,7 @@ namespace RaceDay.API
                 app.MapOpenApi();
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection(); // temporarily disabled so the local .http file works without SSL certificate blocks
 
             // enable session middleware / before authorisation 
             app.UseSession();
