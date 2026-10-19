@@ -24,3 +24,20 @@ Content-Type: application/json
   "email": "cassidy@test.com",
   "password": "Password123!"
 }
+
+### Test Create Event
+POST http://127.0.0.1:5101/api/Events
+Content-Type: application/json
+
+{
+  "title": "Soweto Marathon 2026",
+  "description": "Annual standard marathon event in Johannesburg.",
+  "eventDate": "2026-11-01T06:00:00Z",
+  "location": "Soweto, Johannesburg",
+  "distance": 42.2,
+  "eventType": "run"
+}
+
+### Test Get Events
+GET http://127.0.0.1:5101/api/Events
+Accept: application/json
