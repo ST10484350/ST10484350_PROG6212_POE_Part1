@@ -1,4 +1,4 @@
-# ST10484350_PROG6212_POE_Part1
+# ST10484350_PROG6212_POE_Part2
 # RaceDay - Event Management System
 **PROG6212 Portfolio of Evidence - Part 1**
 **Author:** Cassidy Leigh Moonian
