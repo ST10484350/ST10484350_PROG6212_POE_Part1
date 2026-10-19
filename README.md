@@ -27,3 +27,9 @@ To run this project locally, you will need:
    "ConnectionStrings": {
      "DefaultConnection": "Server=localhost\\SQLEXPRESS;Database=RaceDayDb;Integrated Security=True;TrustServerCertificate=True;"
    }
+
+---
+
+## AI Disclosure
+
+Development of this project was supported by AI tools for troubleshooting and workflow configuration. The developer has thoroughly inspected, adapted, and overseen all AI-generated suggestions to guarantee structural integrity and accuracy.
