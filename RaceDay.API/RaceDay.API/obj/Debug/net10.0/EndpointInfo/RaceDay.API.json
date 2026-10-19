@@ -1,14 +1,9 @@
 {
-  "openapi": "3.1.1",
+  "openapi": "3.0.4",
   "info": {
-    "title": "RaceDay.API | v1",
-    "version": "1.0.0"
+    "title": "RaceDay.API",
+    "version": "1.0"
   },
-  "servers": [
-    {
-      "url": "http://localhost:5101"
-    }
-  ],
   "paths": {
     "/api/Auth/Register": {
       "post": {
@@ -32,8 +27,7 @@
                 "$ref": "#/components/schemas/UserRegisterDto"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -64,8 +58,7 @@
                 "$ref": "#/components/schemas/UserLoginDto"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -85,11 +78,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
+              "type": "integer",
               "format": "int32"
             }
           }
@@ -123,8 +112,7 @@
                 "$ref": "#/components/schemas/CategoryCreateDto"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -167,8 +155,7 @@
                 "$ref": "#/components/schemas/EnrolmentCreateDto"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -209,8 +196,7 @@
                 "$ref": "#/components/schemas/EventCreateDto"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -263,41 +249,31 @@
     "schemas": {
       "CategoryCreateDto": {
         "required": [
-          "eventId",
           "categoryName",
           "distanceKm",
-          "entryFee"
+          "entryFee",
+          "eventId"
         ],
         "type": "object",
         "properties": {
           "eventId": {
-            "pattern": "^-?(?:0|[1-9]\\d*)$",
-            "type": [
-              "integer",
-              "string"
-            ],
+            "type": "integer",
             "format": "int32"
           },
           "categoryName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "distanceKm": {
-            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$",
-            "type": [
-              "number",
-              "string"
-            ],
+            "type": "number",
             "format": "double"
           },
           "entryFee": {
-            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$",
-            "type": [
-              "number",
-              "string"
-            ],
+            "type": "number",
             "format": "double"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "EnrolmentCreateDto": {
         "required": [
@@ -306,53 +282,48 @@
         "type": "object",
         "properties": {
           "categoryId": {
-            "pattern": "^-?(?:0|[1-9]\\d*)$",
-            "type": [
-              "integer",
-              "string"
-            ],
+            "type": "integer",
             "format": "int32"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "EventCreateDto": {
         "required": [
-          "title",
-          "eventDate",
-          "location",
           "distance",
-          "eventType"
+          "eventDate",
+          "eventType",
+          "location",
+          "title"
         ],
         "type": "object",
         "properties": {
           "title": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "description": {
-            "type": [
-              "null",
-              "string"
-            ]
+            "type": "string",
+            "nullable": true
           },
           "eventDate": {
             "type": "string",
             "format": "date-time"
           },
           "location": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "distance": {
-            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$",
-            "type": [
-              "number",
-              "string"
-            ],
+            "type": "number",
             "format": "double"
           },
           "eventType": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
-        }
+        },
+        "additionalProperties": false
       },
       "UserLoginDto": {
         "required": [
@@ -362,39 +333,48 @@
         "type": "object",
         "properties": {
           "email": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "password": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
-        }
+        },
+        "additionalProperties": false
       },
       "UserRegisterDto": {
         "required": [
+          "email",
           "firstName",
           "lastName",
-          "email",
           "password",
           "role"
         ],
         "type": "object",
         "properties": {
           "firstName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "lastName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "password": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "role": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
-        }
+        },
+        "additionalProperties": false
       },
       "WeatherForecast": {
         "type": "object",
@@ -404,28 +384,20 @@
             "format": "date"
           },
           "temperatureC": {
-            "pattern": "^-?(?:0|[1-9]\\d*)$",
-            "type": [
-              "integer",
-              "string"
-            ],
+            "type": "integer",
             "format": "int32"
           },
           "temperatureF": {
-            "pattern": "^-?(?:0|[1-9]\\d*)$",
-            "type": [
-              "integer",
-              "string"
-            ],
-            "format": "int32"
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
           },
           "summary": {
-            "type": [
-              "null",
-              "string"
-            ]
+            "type": "string",
+            "nullable": true
           }
-        }
+        },
+        "additionalProperties": false
       }
     }
   },

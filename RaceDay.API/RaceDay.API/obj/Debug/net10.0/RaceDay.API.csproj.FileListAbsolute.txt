@@ -166,3 +166,8 @@ C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.A
 C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\obj\Debug\net10.0\RaceDay.API.pdb
 C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\obj\Debug\net10.0\RaceDay.API.genruntimeconfig.cache
 C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\obj\Debug\net10.0\ref\RaceDay.API.dll
+C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\bin\Debug\net10.0\EventFlow.dll
+C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\bin\Debug\net10.0\EventFlow.EntityFramework.dll
