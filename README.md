@@ -3,22 +3,27 @@
 **PROG6212 Portfolio of Evidence - Part 1**
 **Author:** Cassidy Leigh Moonian
 
-Project Overview
-This repository contains my system design for RaceDay, a platform to manage road events like running, walking, and cycling. Approaching this from a systems analyst perspective, I focused on clearly separating the functional requirements for two main roles:
-* Organisers: Can create and manage events, set up race categories, and record the final finish times and positions.
-* Participants: Can browse events, enrol in specific categories, pay their entry fees, and check their past race results.
-
-My /docs Folder
-You can find all my required Part 1 system design deliverables in the [`/docs`](./docs) folder:
-1. ERD (`RaceDay_ERD.drawio.png`): My database design showing the 6 main tables and their relationships.
-2. API Endpoint Plan (`Race Day API Endpoint Plan.pdf`): A breakdown of the routes, HTTP methods, and security roles I will need when I build the actual backend API in Part 2.
-3. Database Script (`RaceDay_Database_Script.sql`): The SQL Server script that creates the database and inserts sample seed data so it is ready for testing.
-
-Automated Testing (CI/CD)
-I configured a GitHub Actions workflow that runs automatically whenever code is pushed. It verifies that my `/docs` folder and all three required files are exactly where they should be. 
-
-Successful Build Screenshot:
-![GitHub Actions Build Status](build_status.png)
-
 ---
-*AI Disclosure: I used an AI assistant as a sounding board to help format my documentation tables, and to generate realistic sample data. I reviewed all outputs to ensure they match my own system logic and the exact rubric requirements.*
+
+The RaceDay API is an event management system built with ASP.NET Core 10. It provides a backend interface for managing race events and handles session-based user authentication for different roles, such as Organisers and Participants. The project utilizes Entity Framework Core for data access, SQL Server for data storage, and Swagger for API documentation and testing.
+
+## Video Walkthrough
+
+A complete video demonstration and walkthrough of the program can be found on YouTube here:
+[Insert your YouTube video link here]
+
+## Prerequisites
+
+To run this project locally, you will need:
+* .NET 10 SDK
+* Visual Studio 2022
+* SQL Server (e.g., SQL Server Management Studio with a local SQLEXPRESS instance)
+
+## Setup and Installation
+
+1. **Clone the repository:** Download or clone the project files to your local machine and open the solution in Visual Studio.
+2. **Configure the Database:** Open the `appsettings.json` file. Ensure the `DefaultConnection` string matches your local SQL Server instance. By default, it is configured for a local express server:
+   ```json
+   "ConnectionStrings": {
+     "DefaultConnection": "Server=localhost\\SQLEXPRESS;Database=RaceDayDb;Integrated Security=True;TrustServerCertificate=True;"
+   }
