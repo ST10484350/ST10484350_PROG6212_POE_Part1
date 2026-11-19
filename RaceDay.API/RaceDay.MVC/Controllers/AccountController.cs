@@ -62,6 +62,13 @@ namespace RaceDay.MVC.Controllers
                 {
                     HttpContext.Session.SetString("ProfilePictureUrl", loginData.ProfilePictureUrl);
                 }
+
+                // saving the api's session cookie so subsequent api requests stay authenticated
+                if (response.Headers.TryGetValues("Set-Cookie", out var setCookies))
+                {
+                    var cookieHeader = string.Join("; ", setCookies.Select(c => c.Split(';')[0]));
+                    HttpContext.Session.SetString("ApiSessionCookie", cookieHeader);
+                }
             }
 
             return RedirectToAction("Index", "Home");

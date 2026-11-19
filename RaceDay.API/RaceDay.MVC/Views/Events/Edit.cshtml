@@ -1,0 +1,92 @@
+﻿@model RaceDay.MVC.Models.EventFormViewModel
+
+@{
+    ViewData["Title"] = "Edit Event";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-7">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="card-title mb-4">Edit Event</h2>
+
+                @* using multipart/form-data so a replacement banner image can be uploaded *@
+                <form asp-action="Edit" asp-route-id="@Model.EventId" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="EventId" />
+                    <input type="hidden" asp-for="ExistingBannerUrl" />
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label"></label>
+                        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="EventDate" class="form-label"></label>
+                            <input asp-for="EventDate" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}" class="form-control" />
+                            <span asp-validation-for="EventDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Location" class="form-label"></label>
+                            <input asp-for="Location" class="form-control" />
+                            <span asp-validation-for="Location" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Distance" class="form-label"></label>
+                            <input asp-for="Distance" type="number" step="0.1" class="form-control" />
+                            <span asp-validation-for="Distance" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="EventType" class="form-label"></label>
+                            <select asp-for="EventType" class="form-select">
+                                <option value="run">Run</option>
+                                <option value="cycle">Cycle</option>
+                                <option value="swim">Swim</option>
+                                <option value="triathlon">Triathlon</option>
+                            </select>
+                            <span asp-validation-for="EventType" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    @* showing the current azure blob banner image when one already exists *@
+                    @if (!string.IsNullOrEmpty(Model.ExistingBannerUrl))
+                    {
+                        <div class="mb-3">
+                            <label class="form-label d-block">Current Banner</label>
+                            <img src="@Model.ExistingBannerUrl" alt="Current event banner" class="img-thumbnail" style="max-height: 160px; object-fit: cover;" />
+                        </div>
+                    }
+
+                    <div class="mb-4">
+                        <label asp-for="BannerImage" class="form-label">Replace Banner Image</label>
+                        <input asp-for="BannerImage" type="file" accept=".jpg,.jpeg,.png,.webp" class="form-control" />
+                        <div class="form-text">Leave blank to keep the existing banner. Supported formats: JPG, PNG, WebP.</div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

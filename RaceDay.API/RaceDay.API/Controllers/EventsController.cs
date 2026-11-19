@@ -138,7 +138,7 @@ namespace RaceDay.API.Controllers
 
             if (existingEvent.OrganiserId != userId.Value)
             {
-                return Forbid();
+                return StatusCode(403, "You can only modify or delete events that you created.");
             }
 
             // updating all editable event fields from the request
@@ -179,7 +179,7 @@ namespace RaceDay.API.Controllers
 
             if (existingEvent.OrganiserId != userId.Value)
             {
-                return Forbid();
+                return StatusCode(403, "You can only modify or delete events that you created.");
             }
 
             _context.Events.Remove(existingEvent);
@@ -200,11 +200,16 @@ namespace RaceDay.API.Controllers
                 return Unauthorized("Access Denied: Only logged-in Organisers can upload event banners.");
             }
 
-            // checking that the event exists before uploading the image to azure
+            // checking that the event exists and belongs to this organiser before uploading to azure
             var raceEvent = _context.Events.FirstOrDefault(e => e.EventId == id);
             if (raceEvent == null)
             {
                 return NotFound("Event not found.");
+            }
+
+            if (raceEvent.OrganiserId != userId.Value)
+            {
+                return StatusCode(403, "You can only upload banners for events that you created.");
             }
 
             // validating that a real image file was attached

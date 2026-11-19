@@ -1,0 +1,74 @@
+﻿@model RaceDay.MVC.Models.EventViewModel
+@using Microsoft.AspNetCore.Http
+
+@{
+    ViewData["Title"] = Model.Title;
+    var role = Context.Session.GetString("Role");
+    var currentUserId = Context.Session.GetInt32("UserId");
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            @* rendering the event banner from azure blob storage when available *@
+            @if (!string.IsNullOrEmpty(Model.BannerImageUrl))
+            {
+                <img src="@Model.BannerImageUrl" class="card-img-top" alt="@Model.Title" style="max-height: 350px; object-fit: cover;" />
+            }
+            else
+            {
+                <div class="bg-light d-flex align-items-center justify-content-center text-muted" style="height: 220px;">
+                    <span>No Banner Image Uploaded</span>
+                </div>
+            }
+
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <h2 class="card-title mb-0">@Model.Title</h2>
+                    <span class="badge bg-info text-dark text-uppercase fs-6">@Model.EventType</span>
+                </div>
+
+                <p class="lead">@Model.Description</p>
+
+                <hr />
+
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <p class="mb-1 text-muted small">Date & Time</p>
+                        <p class="fw-semibold">@Model.EventDate.ToString("dd MMM yyyy, HH:mm")</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="mb-1 text-muted small">Location</p>
+                        <p class="fw-semibold">@Model.Location</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="mb-1 text-muted small">Distance</p>
+                        <p class="fw-semibold">@Model.Distance km</p>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <a asp-action="Index" class="btn btn-outline-secondary">Back to Events</a>
+
+                    <div class="d-flex gap-2">
+                        @* showing organiser management actions only for the event owner, or enrolment button for participants *@
+                        @if (role == "Organiser" && Model.OrganiserId == currentUserId)
+                        {
+                            <a asp-action="Edit" asp-route-id="@Model.EventId" class="btn btn-outline-primary">Edit Event</a>
+                            <form asp-action="Delete" asp-route-id="@Model.EventId" method="post" onsubmit="return confirm('Are you sure you want to delete this event?');">
+                                <button type="submit" class="btn btn-outline-danger">Delete Event</button>
+                            </form>
+                        }
+                        else if (role == "Participant")
+                        {
+                            <form asp-controller="Enrolments" asp-action="Enrol" method="post">
+                                <input type="hidden" name="eventId" value="@Model.EventId" />
+                                <button type="submit" class="btn btn-success">Enrol in Event</button>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

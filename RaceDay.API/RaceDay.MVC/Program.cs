@@ -1,3 +1,5 @@
+using RaceDay.MVC.Services;
+
 namespace RaceDay.MVC
 {
     public class Program
@@ -21,12 +23,17 @@ namespace RaceDay.MVC
                 options.Cookie.IsEssential = true;
             });
 
+            // registering the handler that forwards the api session cookie on outgoing requests
+            builder.Services.AddTransient<ApiCookieHandler>();
+
             // registering an httpclient so the MVC app communicates with the P2 API and not the db
             var apiBaseUrl = builder.Configuration["ApiSettings:BaseUrl"] ?? "http://localhost:5101/";
             builder.Services.AddHttpClient("RaceDayApi", client =>
             {
                 client.BaseAddress = new Uri(apiBaseUrl);
-            });
+            })
+            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { UseCookies = false })
+            .AddHttpMessageHandler<ApiCookieHandler>();
 
             var app = builder.Build();
 
@@ -41,7 +48,7 @@ namespace RaceDay.MVC
             //app.UseHttpsRedirection();
             app.UseRouting();
 
-            // enabling sessions before authorization so controllers and views can check te logged in user
+            // enabling sessions before authorization so controllers and views can check the logged in user
             app.UseSession();
             app.UseAuthorization();
 
