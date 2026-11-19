@@ -22,7 +22,7 @@ namespace RaceDay.MVC
             });
 
             // registering an httpclient so the MVC app communicates with the P2 API and not the db
-            var apiBaseUrl = builder.Configuration["ApiSettings:BaseUrl"] ?? "http://localhost:5271/";
+            var apiBaseUrl = builder.Configuration["ApiSettings:BaseUrl"] ?? "http://localhost:5101/";
             builder.Services.AddHttpClient("RaceDayApi", client =>
             {
                 client.BaseAddress = new Uri(apiBaseUrl);
