@@ -171,3 +171,7 @@ C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.A
 C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\bin\Debug\net10.0\EventFlow.dll
 C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\bin\Debug\net10.0\EventFlow.EntityFramework.dll
+C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\bin\Debug\net10.0\Apache.Arrow.dll
+C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\bin\Debug\net10.0\Azure.Storage.Blobs.dll
+C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\bin\Debug\net10.0\Azure.Storage.Common.dll
+C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\bin\Debug\net10.0\System.IO.Hashing.dll

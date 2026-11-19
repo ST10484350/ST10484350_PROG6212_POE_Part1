@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RaceDay.API.Data; // Change to RaceDay.API.Models if your AppDbContext is in the Models folder
+using RaceDay.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,9 @@ builder.Services.AddSession(options =>
 // 4. Database Connection Configuration
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// registering the azure blob storage service for uploading event banners and profile pictures
+builder.Services.AddScoped<BlobStorageService>();
 
 var app = builder.Build();
 

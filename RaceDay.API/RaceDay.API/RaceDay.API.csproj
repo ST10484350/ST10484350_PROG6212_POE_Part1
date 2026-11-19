@@ -5,9 +5,11 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
 	<NuGetAudit>false</NuGetAudit>
+	<UserSecretsId>a6debce3-5ce4-4b62-ae6f-4725796a128d</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.30.1" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
     <PackageReference Include="EventFlow.EntityFramework" Version="1.2.3" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.13" />

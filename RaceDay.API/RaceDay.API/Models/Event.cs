@@ -26,6 +26,9 @@ namespace RaceDay.API.Models
         [Required]
         public string EventType { get; set; } = string.Empty; // keeping this restricted to "run", "walk", or "cycle" based on my Part 1 spec
 
+        // storing the azure blob url for the event banner image
+        public string? BannerImageUrl { get; set; }
+
         // linking this event to the specific Organiser who created it
         [ForeignKey("Organiser")]
         public int OrganiserId { get; set; }
