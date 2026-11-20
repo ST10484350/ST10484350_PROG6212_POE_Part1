@@ -19,6 +19,8 @@ namespace RaceDay.API.Models
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
 
+        public Result? Result { get; set; }
+
         // automatically capture when they entered the race
         public DateTime EnrolmentDate { get; set; } = DateTime.Now;
     }

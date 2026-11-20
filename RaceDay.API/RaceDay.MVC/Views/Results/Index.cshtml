@@ -1,0 +1,84 @@
+@model List<RaceDay.MVC.Models.ResultEntryViewModel>
+
+@{
+    ViewData["Title"] = "Manage Results";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-1">Manage Race Results</h2>
+        <p class="text-muted mb-0">Enter or update the finish time and position for your participants.</p>
+    </div>
+    <a asp-controller="Events" asp-action="Index" class="btn btn-outline-primary">My Events</a>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No participants have enrolled in your events yet.</div>
+}
+else
+{
+    <div class="card shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Event</th>
+                        <th>Race date</th>
+                        <th>Participant</th>
+                        <th>Category</th>
+                        <th>Finish time</th>
+                        <th>Position</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.EventTitle</td>
+                            <td>@item.EventDate.ToString("dd MMM yyyy, HH:mm")</td>
+                            <td>
+                                <strong>@item.ParticipantName</strong><br />
+                                <small class="text-muted">@item.ParticipantEmail</small>
+                            </td>
+                            <td>@item.CategoryName</td>
+                            <td colspan="3">
+                                <form asp-action="Save" method="post" class="row g-2 align-items-start">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="EnrolmentId" value="@item.EnrolmentId" />
+                                    <div class="col-md-4">
+                                        <label class="visually-hidden" for="time-@item.EnrolmentId">Finish time</label>
+                                        <input id="time-@item.EnrolmentId" name="FinishTimeInput" class="form-control" value="@(item.FinishTime?.ToString(@"hh\:mm\:ss") ?? string.Empty)" placeholder="hh:mm:ss" pattern="[0-9]+:[0-5][0-9]:[0-5][0-9]" required />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="visually-hidden" for="position-@item.EnrolmentId">Position</label>
+                                        <input id="position-@item.EnrolmentId" name="PositionInput" type="number" min="1" class="form-control" value="@(item.Position?.ToString() ?? string.Empty)" placeholder="Position" required />
+                                    </div>
+                                    <div class="col-md-5 d-flex gap-2">
+                                        <button type="submit" class="btn btn-primary">@(item.ResultId.HasValue ? "Update result" : "Save result")</button>
+                                        @if (item.ResultId.HasValue)
+                                        {
+                                            <span class="badge bg-success align-self-center">Result recorded</span>
+                                        }
+                                    </div>
+                                </form>
+                                <small class="text-muted">Enter time as hours:minutes:seconds, for example 01:24:37.</small>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

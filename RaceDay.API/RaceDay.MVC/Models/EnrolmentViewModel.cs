@@ -15,5 +15,8 @@
         public DateTime EventDate { get; set; }
         public string EventLocation { get; set; } = string.Empty;
         public string? BannerImageUrl { get; set; }
+        public int? ResultId { get; set; }
+        public TimeSpan? FinishTime { get; set; }
+        public int? Position { get; set; }
     }
 }

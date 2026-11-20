@@ -32,6 +32,7 @@ namespace RaceDay.API.Controllers
             var enrolments = _context.Enrolments
                 .Include(e => e.Category)
                     .ThenInclude(c => c!.Event)
+                .Include(e => e.Result)
                 .Where(e => e.ParticipantId == userId)
                 .OrderByDescending(e => e.EnrolmentDate)
                 .Select(e => new
@@ -46,7 +47,10 @@ namespace RaceDay.API.Controllers
                     EventTitle = e.Category != null && e.Category.Event != null ? e.Category.Event.Title : string.Empty,
                     EventDate = e.Category != null && e.Category.Event != null ? e.Category.Event.EventDate : DateTime.MinValue,
                     EventLocation = e.Category != null && e.Category.Event != null ? e.Category.Event.Location : string.Empty,
-                    BannerImageUrl = e.Category != null && e.Category.Event != null ? e.Category.Event.BannerImageUrl : null
+                    BannerImageUrl = e.Category != null && e.Category.Event != null ? e.Category.Event.BannerImageUrl : null,
+                    ResultId = e.Result != null ? e.Result.ResultId : (int?)null,
+                    FinishTime = e.Result != null ? e.Result.FinishTime : (TimeSpan?)null,
+                    Position = e.Result != null ? e.Result.Position : (int?)null
                 })
                 .ToList();
 

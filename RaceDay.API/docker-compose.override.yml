@@ -1,9 +1,28 @@
 services:
+  raceday.db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: "RaceDay_SqlServer_2026!"
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'RaceDay_SqlServer_2026!' -Q 'SELECT 1' -C || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    ports:
+      - "1433"
+
   raceday.api:
+    depends_on:
+      raceday.db:
+        condition: service_healthy
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
+      # The API and database share the compose network; localhost/. would point at the API container.
+      - ConnectionStrings__DefaultConnection=Server=raceday.db,1433;Database=RaceDayDb;User Id=sa;Password=RaceDay_SqlServer_2026!;TrustServerCertificate=True;
     ports:
       - "8080"
       - "8081"
