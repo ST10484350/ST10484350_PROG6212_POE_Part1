@@ -159,7 +159,6 @@ C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.A
 C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\obj\Debug\net10.0\staticwebassets.development.json
 C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\obj\Debug\net10.0\staticwebassets.build.endpoints.json
 C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\obj\Debug\net10.0\swae.build.ex.cache
-C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
 C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\obj\Debug\net10.0\RaceDay..F786E5D0.Up2Date
 C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\obj\Debug\net10.0\RaceDay.API.dll
 C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\obj\Debug\net10.0\refint\RaceDay.API.dll
@@ -175,3 +174,4 @@ C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.A
 C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\bin\Debug\net10.0\Azure.Storage.Blobs.dll
 C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\bin\Debug\net10.0\Azure.Storage.Common.dll
 C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\bin\Debug\net10.0\System.IO.Hashing.dll
+C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt

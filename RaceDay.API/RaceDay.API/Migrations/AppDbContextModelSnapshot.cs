@@ -166,7 +166,8 @@ namespace RaceDay.API.Migrations
 
                     b.HasKey("ResultId");
 
-                    b.HasIndex("EnrolmentId");
+                    b.HasIndex("EnrolmentId")
+                        .IsUnique();
 
                     b.ToTable("Results");
                 });
@@ -262,8 +263,8 @@ namespace RaceDay.API.Migrations
             modelBuilder.Entity("RaceDay.API.Models.Result", b =>
                 {
                     b.HasOne("RaceDay.API.Models.Enrolment", "Enrolment")
-                        .WithMany()
-                        .HasForeignKey("EnrolmentId")
+                        .WithOne("Result")
+                        .HasForeignKey("RaceDay.API.Models.Result", "EnrolmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

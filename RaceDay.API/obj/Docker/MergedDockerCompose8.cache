@@ -1,0 +1,201 @@
+name: dockercompose6497761531855338612
+services:
+  raceday.api:
+    entrypoint:
+      - dotnet
+      - --roll-forward
+      - Major
+      - /VSTools/DistrolessHelper/DistrolessHelper.dll
+      - --wait
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ASPNETCORE_HTTPS_PORTS: "8081"
+      ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS: "true"
+      ConnectionStrings__DefaultConnection: Server=host.docker.internal\SQLEXPRESS;Database=RaceDayDb;Trusted_Connection=True;TrustServerCertificate=True;
+      DOTNET_USE_POLLING_FILE_WATCHER: "1"
+      NUGET_FALLBACK_PACKAGES: /.nuget/fallbackpackages
+    image: raceday-api:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /.nuget/packages
+        --additionalProbingPath /.nuget/fallbackpackages  "/app/bin/Debug/net10.0/RaceDay.API.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: dotnet --roll-forward Major
+        /VSTools/DistrolessHelper/DistrolessHelper.dll --stop dotnet
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    networks:
+      default: null
+    volumes:
+      - type: bind
+        source: C:\Users\emeris\AppData\Roaming\Microsoft\UserSecrets
+        target: /home/app/.microsoft/usersecrets
+        read_only: true
+        bind: {}
+      - type: bind
+        source: C:\Users\emeris\AppData\Roaming\Microsoft\UserSecrets
+        target: /root/.microsoft/usersecrets
+        read_only: true
+        bind: {}
+      - type: bind
+        source: C:\Users\emeris\AppData\Roaming\ASP.NET\Https
+        target: /home/app/.aspnet/https
+        read_only: true
+        bind: {}
+      - type: bind
+        source: C:\Users\emeris\AppData\Roaming\ASP.NET\Https
+        target: /root/.aspnet/https
+        read_only: true
+        bind: {}
+      - type: bind
+        source: C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.API
+        target: /app
+        bind: {}
+      - type: bind
+        source: C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API
+        target: /src
+        bind: {}
+      - type: bind
+        source: C:\Users\emeris\vsdbg\vs2017u5
+        target: /remote_debugger
+        bind: {}
+      - type: bind
+        source: C:\Users\emeris\.nuget\packages
+        target: /.nuget/packages
+        read_only: true
+        bind: {}
+      - type: bind
+        source: C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages
+        target: /.nuget/fallbackpackages
+        read_only: true
+        bind: {}
+      - type: bind
+        source: C:\Program Files\Microsoft Visual Studio\18\Community\MSBuild\Sdks\Microsoft.Docker.Sdk\tools\linux-x64\net6.0
+        target: /VSTools
+        read_only: true
+        bind: {}
+      - type: bind
+        source: C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\extensions\Microsoft\managedprojectsystem\HotReload
+        target: /HotReloadAgent
+        read_only: true
+        bind: {}
+    build:
+      context: C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API
+      dockerfile: RaceDay.API/Dockerfile
+      args:
+        BUILD_CONFIGURATION: Debug
+        LAUNCHING_FROM_VS: "true"
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: RaceDay.API
+      target: base
+    ports:
+      - mode: ingress
+        target: 8080
+        published: "5101"
+        protocol: tcp
+      - mode: ingress
+        target: 8080
+        protocol: tcp
+      - mode: ingress
+        target: 8081
+        protocol: tcp
+    tty: true
+  raceday.mvc:
+    entrypoint:
+      - dotnet
+      - --roll-forward
+      - Major
+      - /VSTools/DistrolessHelper/DistrolessHelper.dll
+      - --wait
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS: "true"
+      ApiBaseUrl: http://raceday.api:8080/
+      DOTNET_USE_POLLING_FILE_WATCHER: "1"
+      NUGET_FALLBACK_PACKAGES: /.nuget/fallbackpackages
+    image: raceday-mvc:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /.nuget/packages
+        --additionalProbingPath /.nuget/fallbackpackages  "/app/bin/Debug/net10.0/RaceDay.MVC.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: dotnet --roll-forward Major
+        /VSTools/DistrolessHelper/DistrolessHelper.dll --stop dotnet
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    networks:
+      default: null
+    volumes:
+      - type: bind
+        source: C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API\RaceDay.MVC
+        target: /app
+        bind: {}
+      - type: bind
+        source: C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API
+        target: /src
+        bind: {}
+      - type: bind
+        source: C:\Users\emeris\vsdbg\vs2017u5
+        target: /remote_debugger
+        bind: {}
+      - type: bind
+        source: C:\Users\emeris\.nuget\packages
+        target: /.nuget/packages
+        read_only: true
+        bind: {}
+      - type: bind
+        source: C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages
+        target: /.nuget/fallbackpackages
+        read_only: true
+        bind: {}
+      - type: bind
+        source: C:\Users\emeris\AppData\Roaming\ASP.NET\Https
+        target: /root/.aspnet/https
+        read_only: true
+        bind: {}
+      - type: bind
+        source: C:\Users\emeris\AppData\Roaming\ASP.NET\Https
+        target: /home/app/.aspnet/https
+        read_only: true
+        bind: {}
+      - type: bind
+        source: C:\Users\emeris\AppData\Roaming\Microsoft\UserSecrets
+        target: /root/.microsoft/usersecrets
+        read_only: true
+        bind: {}
+      - type: bind
+        source: C:\Users\emeris\AppData\Roaming\Microsoft\UserSecrets
+        target: /home/app/.microsoft/usersecrets
+        read_only: true
+        bind: {}
+      - type: bind
+        source: C:\Program Files\Microsoft Visual Studio\18\Community\MSBuild\Sdks\Microsoft.Docker.Sdk\tools\linux-x64\net6.0
+        target: /VSTools
+        read_only: true
+        bind: {}
+      - type: bind
+        source: C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\extensions\Microsoft\managedprojectsystem\HotReload
+        target: /HotReloadAgent
+        read_only: true
+        bind: {}
+    build:
+      context: C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API
+      dockerfile: RaceDay.MVC/Dockerfile
+      args:
+        BUILD_CONFIGURATION: Debug
+        LAUNCHING_FROM_VS: "true"
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: RaceDay.MVC
+      target: base
+    depends_on:
+      raceday.api:
+        condition: service_started
+        required: true
+    ports:
+      - mode: ingress
+        target: 8080
+        published: "5284"
+        protocol: tcp
+    tty: true
+networks:
+  default:
+    name: dockercompose6497761531855338612_default

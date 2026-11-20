@@ -1,0 +1,68 @@
+name: dockercompose6497761531855338612
+services:
+  raceday.api:
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ASPNETCORE_HTTPS_PORTS: "8081"
+      ConnectionStrings__DefaultConnection: Server=host.docker.internal,1433;Database=RaceDayDb;Trusted_Connection=True;TrustServerCertificate=True;
+    image: raceday-api:latest
+    networks:
+      default: null
+    volumes:
+      - type: bind
+        source: C:\Users\emeris\AppData\Roaming/Microsoft/UserSecrets
+        target: /home/app/.microsoft/usersecrets
+        read_only: true
+        bind: {}
+      - type: bind
+        source: C:\Users\emeris\AppData\Roaming/Microsoft/UserSecrets
+        target: /root/.microsoft/usersecrets
+        read_only: true
+        bind: {}
+      - type: bind
+        source: C:\Users\emeris\AppData\Roaming/ASP.NET/Https
+        target: /home/app/.aspnet/https
+        read_only: true
+        bind: {}
+      - type: bind
+        source: C:\Users\emeris\AppData\Roaming/ASP.NET/Https
+        target: /root/.aspnet/https
+        read_only: true
+        bind: {}
+    build:
+      context: C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API
+      dockerfile: RaceDay.API/Dockerfile
+    ports:
+      - mode: ingress
+        target: 8080
+        published: "5101"
+        protocol: tcp
+      - mode: ingress
+        target: 8080
+        protocol: tcp
+      - mode: ingress
+        target: 8081
+        protocol: tcp
+  raceday.mvc:
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ApiBaseUrl: http://raceday.api:8080/
+    image: raceday-mvc:latest
+    networks:
+      default: null
+    build:
+      context: C:\Users\emeris\source\repos\ST10484350_PROG6212_POE_Part1\RaceDay.API
+      dockerfile: RaceDay.MVC/Dockerfile
+    depends_on:
+      raceday.api:
+        condition: service_started
+        required: true
+    ports:
+      - mode: ingress
+        target: 8080
+        published: "5284"
+        protocol: tcp
+networks:
+  default:
+    name: dockercompose6497761531855338612_default

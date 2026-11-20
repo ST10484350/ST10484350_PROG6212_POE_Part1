@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using RaceDay.API.Data;
 using RaceDay.API.Models;
 using RaceDay.API.Services;
@@ -182,10 +184,55 @@ namespace RaceDay.API.Controllers
                 return StatusCode(403, "You can only modify or delete events that you created.");
             }
 
+            // Enrolments are retained records and their CategoryId FK is intentionally
+            // restrictive. Do not cascade-delete enrolments (or their payments/results)
+            // when an organiser removes an event.
+            var enrolmentCount = _context.Enrolments.Count(enrolment =>
+                _context.Categories.Any(category =>
+                    category.CategoryId == enrolment.CategoryId && category.EventId == id));
+
+            if (enrolmentCount > 0)
+            {
+                return Conflict(new
+                {
+                    message = "This event cannot be deleted because participants are enrolled in one or more of its categories.",
+                    enrolmentCount
+                });
+            }
+
             _context.Events.Remove(existingEvent);
-            _context.SaveChanges();
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException exception) when (IsCategoryEnrolmentDeleteConflict(exception))
+            {
+                // An enrolment could be added after the pre-check. Convert that
+                // race into the same safe conflict response instead of a 500.
+                return Conflict(new
+                {
+                    message = "This event cannot be deleted because participants are enrolled in one or more of its categories."
+                });
+            }
 
             return Ok(new { message = "Event deleted successfully." });
+        }
+
+        private static bool IsCategoryEnrolmentDeleteConflict(DbUpdateException exception)
+        {
+            for (var current = exception.InnerException; current != null; current = current.InnerException)
+            {
+                if (current is SqlException sqlException &&
+                    sqlException.Number == 547 &&
+                    sqlException.Message.Contains(
+                        "FK_Enrolments_Categories_CategoryId",
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         // POST: api/Events/5/banner

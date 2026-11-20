@@ -25,7 +25,7 @@ namespace RaceDay.MVC.Controllers
         // checking whether the current session belongs to a participant
         private bool IsParticipant() => HttpContext.Session.GetString("Role") == "Participant";
 
-        // fetching all enrolments for the currently logged-in participant
+        // fetching upcoming enrolments for the currently logged-in participant
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -41,7 +41,7 @@ namespace RaceDay.MVC.Controllers
             }
 
             var client = _httpClientFactory.CreateClient("RaceDayApi");
-            var response = await client.GetAsync("api/Enrolments/my-enrolments");
+            var response = await client.GetAsync("api/Results/my-upcoming");
 
             var enrolments = new List<EnrolmentViewModel>();
             if (response.IsSuccessStatusCode)

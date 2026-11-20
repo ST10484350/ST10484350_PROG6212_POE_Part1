@@ -22,12 +22,22 @@ builder.Services.AddSession(options =>
 
 // 4. Database Connection Configuration
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        sqlOptions => sqlOptions.EnableRetryOnFailure()));
 
 // registering the azure blob storage service for uploading event banners and profile pictures
 builder.Services.AddScoped<BlobStorageService>();
 
 var app = builder.Build();
+
+// Apply the checked-in EF migrations when the compose database is first created.
+// This keeps database provisioning explicit and avoids requests racing schema creation.
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
