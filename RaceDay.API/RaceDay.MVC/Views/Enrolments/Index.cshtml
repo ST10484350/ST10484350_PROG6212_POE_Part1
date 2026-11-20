@@ -1,0 +1,81 @@
+﻿@model List<RaceDay.MVC.Models.EnrolmentViewModel>
+
+@{
+    ViewData["Title"] = "My Enrolments";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">My Race Enrolments</h2>
+    <a asp-controller="Events" asp-action="Index" class="btn btn-outline-primary">Browse Events</a>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <div class="card shadow-sm text-center p-5">
+        <h5 class="text-muted mb-2">You haven't enrolled in any races yet.</h5>
+        <p class="text-muted mb-3">Explore upcoming RaceDay events and pick a category to join.</p>
+        <div>
+            <a asp-controller="Events" asp-action="Index" class="btn btn-primary">Find a Race</a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    @if (!string.IsNullOrEmpty(item.BannerImageUrl))
+                    {
+                        <img src="@item.BannerImageUrl" class="card-img-top" alt="@item.EventTitle" style="height: 160px; object-fit: cover;" />
+                    }
+                    else
+                    {
+                        <div class="bg-light d-flex align-items-center justify-content-center text-muted" style="height: 160px;">
+                            <span>No Banner Image</span>
+                        </div>
+                    }
+
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title mb-0">@item.EventTitle</h5>
+                            <span class="badge bg-success">@item.CategoryName</span>
+                        </div>
+
+                        <p class="card-text text-muted small mb-3 flex-grow-1">
+                            <strong>Race Date:</strong> @item.EventDate.ToString("dd MMM yyyy, HH:mm")<br />
+                            <strong>Location:</strong> @item.EventLocation<br />
+                            <strong>Distance:</strong> @item.DistanceKm km<br />
+                            <strong>Entry Fee:</strong> R @item.EntryFee.ToString("N2")<br />
+                            <strong>Enrolled On:</strong> @item.EnrolmentDate.ToString("dd MMM yyyy")
+                        </p>
+
+                        <div class="d-flex justify-content-between align-items-center gap-2 mt-2">
+                            <a asp-controller="Events" asp-action="Details" asp-route-id="@item.EventId" class="btn btn-sm btn-outline-primary flex-grow-1">View Event</a>
+                            <form asp-action="Cancel" asp-route-id="@item.EnrolmentId" method="post" onsubmit="return confirm('Are you sure you want to cancel this enrolment?');">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Cancel Enrolment</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

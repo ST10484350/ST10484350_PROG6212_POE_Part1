@@ -1,0 +1,62 @@
+﻿@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "Home Page";
+    var isLoggedIn = Context.Session.GetInt32("UserId") != null;
+    var role = Context.Session.GetString("Role");
+}
+
+<div class="text-center py-5">
+    <h1 class="display-4 fw-bold text-primary mb-4">Welcome to RaceDay</h1>
+    <p class="lead text-muted mb-5">Your ultimate platform for discovering, managing, and entering competitive racing events.</p>
+
+    @if (!isLoggedIn)
+    {
+        <div class="d-flex justify-content-center gap-3">
+            <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-lg px-4">Get Started</a>
+            <a asp-controller="Account" asp-action="Login" class="btn btn-outline-secondary btn-lg px-4">Sign In</a>
+        </div>
+    }
+    else
+    {
+        <div class="row mt-4 justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm border-0 bg-light">
+                    <div class="card-body py-5">
+                        <h3 class="mb-3">Ready for your next event?</h3>
+                        @if (role == "Organiser")
+                        {
+                            <p class="text-muted mb-4">Manage your races, track enrolments, and add new categories for participants.</p>
+                            <div class="d-flex justify-content-center gap-3">
+                                <a asp-controller="Events" asp-action="Create" class="btn btn-success btn-lg">Create New Event</a>
+                                <a asp-controller="Events" asp-action="Index" class="btn btn-outline-primary btn-lg">Manage Events</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted mb-4">Browse upcoming races, secure your spot, and prepare for race day.</p>
+                            <div class="d-flex justify-content-center gap-3">
+                                <a asp-controller="Events" asp-action="Index" class="btn btn-primary btn-lg">Browse Events</a>
+                                <a asp-controller="Enrolments" asp-action="Index" class="btn btn-outline-secondary btn-lg">My Enrolments</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row mt-5 pt-4 text-center">
+    <div class="col-md-4 mb-4">
+        <h4 class="fw-semibold">Find Races</h4>
+        <p class="text-muted">Easily search and filter upcoming races by distance, location, and type.</p>
+    </div>
+    <div class="col-md-4 mb-4">
+        <h4 class="fw-semibold">Secure Enrolment</h4>
+        <p class="text-muted">Register for race categories with one click and track your history.</p>
+    </div>
+    <div class="col-md-4 mb-4">
+        <h4 class="fw-semibold">Organiser Tools</h4>
+        <p class="text-muted">Host your own events, manage participants, and set entry fees.</p>
+    </div>
+</div>

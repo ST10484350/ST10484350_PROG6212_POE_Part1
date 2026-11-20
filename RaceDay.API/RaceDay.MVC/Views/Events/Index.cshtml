@@ -1,0 +1,113 @@
+﻿@model List<RaceDay.MVC.Models.EventViewModel>
+@using Microsoft.AspNetCore.Http
+
+@{
+    ViewData["Title"] = "Events";
+    var role = Context.Session.GetString("Role");
+    var currentUserId = Context.Session.GetInt32("UserId");
+    var search = ViewBag.Search as string;
+    var eventType = ViewBag.EventType as string;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Upcoming RaceDay Events</h2>
+
+    @* showing the create event button only for organisers *@
+    @if (role == "Organiser")
+    {
+        <a asp-action="Create" class="btn btn-primary">+ Create New Event</a>
+    }
+</div>
+
+@* displaying feedback alerts after creating, updating, or deleting events *@
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@* filtering events by search keyword and event category *@
+<form method="get" asp-action="Index" class="row g-2 mb-4">
+    <div class="col-md-6">
+        <input type="text" name="search" value="@search" class="form-control" placeholder="Search by title or location..." />
+    </div>
+    <div class="col-md-3">
+        <select name="eventType" class="form-select">
+            <option value="">All Event Types</option>
+            <option value="run" selected="@(eventType == "run")">Run</option>
+            <option value="cycle" selected="@(eventType == "cycle")">Cycle</option>
+            <option value="swim" selected="@(eventType == "swim")">Swim</option>
+            <option value="triathlon" selected="@(eventType == "triathlon")">Triathlon</option>
+        </select>
+    </div>
+    <div class="col-md-3 d-flex gap-2">
+        <button type="submit" class="btn btn-outline-primary w-100">Filter</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+    </div>
+</form>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No events found matching your criteria.</div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var ev in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    @* rendering the azure blob banner image or a clean placeholder when none is set *@
+                    @if (!string.IsNullOrEmpty(ev.BannerImageUrl))
+                    {
+                        <img src="@ev.BannerImageUrl" class="card-img-top" alt="@ev.Title" style="height: 180px; object-fit: cover;" />
+                    }
+                    else
+                    {
+                        <div class="bg-light d-flex align-items-center justify-content-center text-muted" style="height: 180px;">
+                            <span>No Banner Image</span>
+                        </div>
+                    }
+
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title mb-0">@ev.Title</h5>
+                            <span class="badge bg-info text-dark text-uppercase">@ev.EventType</span>
+                        </div>
+
+                        <p class="card-text text-muted small mb-2">
+                            <strong>Date:</strong> @ev.EventDate.ToString("dd MMM yyyy, HH:mm")<br />
+                            <strong>Location:</strong> @ev.Location<br />
+                            <strong>Distance:</strong> @ev.Distance km
+                        </p>
+
+                        <p class="card-text flex-grow-1">@ev.Description</p>
+
+                        <div class="d-flex gap-2 mt-3">
+                            <a asp-action="Details" asp-route-id="@ev.EventId" class="btn btn-sm btn-outline-primary flex-grow-1">Details</a>
+
+                            @* displaying edit and delete controls only for the organiser who created the event *@
+                            @if (role == "Organiser" && ev.OrganiserId == currentUserId)
+                            {
+                                <a asp-action="Edit" asp-route-id="@ev.EventId" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                <form asp-action="Delete" asp-route-id="@ev.EventId" method="post" onsubmit="return confirm('Are you sure you want to delete this event?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

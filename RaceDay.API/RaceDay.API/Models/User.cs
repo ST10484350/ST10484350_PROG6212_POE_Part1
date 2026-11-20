@@ -23,5 +23,8 @@ namespace RaceDay.API.Models
 
         [Required]
         public string Role { get; set; } = string.Empty; // must be "organiser" or "participant" for session management
+
+        // storing the azure blob url for the participant profile picture
+        public string? ProfilePictureUrl { get; set; }
     }
 }
