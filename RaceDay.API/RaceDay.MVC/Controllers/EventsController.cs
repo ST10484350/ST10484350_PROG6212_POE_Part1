@@ -65,7 +65,7 @@ namespace RaceDay.MVC.Controllers
             return View(events);
         }
 
-        // fetching a single event by id to display its full details
+        // fetching a single event by id along with its race categories and participant enrolment status
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
@@ -85,7 +85,77 @@ namespace RaceDay.MVC.Controllers
 
             var json = await response.Content.ReadAsStringAsync();
             var ev = JsonSerializer.Deserialize<EventViewModel>(json, _jsonOptions);
+
+            // loading the race categories linked to this event
+            var categories = new List<CategoryViewModel>();
+            var catResponse = await client.GetAsync($"api/Categories/event/{id}");
+            if (catResponse.IsSuccessStatusCode)
+            {
+                var catJson = await catResponse.Content.ReadAsStringAsync();
+                categories = JsonSerializer.Deserialize<List<CategoryViewModel>>(catJson, _jsonOptions) ?? new();
+            }
+            ViewBag.Categories = categories;
+
+            // checking which categories the participant is already enrolled in so the ui can reflect it
+            var enrolledCategoryIds = new HashSet<int>();
+            if (HttpContext.Session.GetString("Role") == "Participant")
+            {
+                var enrolResponse = await client.GetAsync("api/Enrolments/my-enrolments");
+                if (enrolResponse.IsSuccessStatusCode)
+                {
+                    var enrolJson = await enrolResponse.Content.ReadAsStringAsync();
+                    var enrolments = JsonSerializer.Deserialize<List<EnrolmentViewModel>>(enrolJson, _jsonOptions) ?? new();
+                    enrolledCategoryIds = enrolments.Select(e => e.CategoryId).ToHashSet();
+                }
+            }
+            ViewBag.EnrolledCategoryIds = enrolledCategoryIds;
+
             return View(ev);
+        }
+
+        // adding a new race category to an event for organisers
+        [HttpPost]
+        public async Task<IActionResult> AddCategory(CategoryViewModel model)
+        {
+            if (!IsOrganiser())
+            {
+                TempData["ErrorMessage"] = "Only organisers can add race categories.";
+                return RedirectToAction(nameof(Details), new { id = model.EventId });
+            }
+
+            if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = "Please enter a valid category name, distance, and entry fee.";
+                return RedirectToAction(nameof(Details), new { id = model.EventId });
+            }
+
+            var client = _httpClientFactory.CreateClient("RaceDayApi");
+            var payload = JsonSerializer.Serialize(new
+            {
+                model.EventId,
+                model.CategoryName,
+                model.DistanceKm,
+                model.EntryFee
+            });
+
+            var response = await client.PostAsync(
+                "api/Categories",
+                new StringContent(payload, Encoding.UTF8, "application/json")
+            );
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["SuccessMessage"] = $"Category '{model.CategoryName}' added successfully!";
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                TempData["ErrorMessage"] = string.IsNullOrWhiteSpace(error)
+                    ? "Could not add category."
+                    : error.Trim('"');
+            }
+
+            return RedirectToAction(nameof(Details), new { id = model.EventId });
         }
 
         // displaying the create event form for organisers
