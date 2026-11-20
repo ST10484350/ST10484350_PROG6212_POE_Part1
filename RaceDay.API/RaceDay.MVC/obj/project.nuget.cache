@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "0ydisHLqGCQ=",
+  "dgSpecHash": "EsIR4IPvQxc=",
   "success": true,
   "projectFilePath": "C:\\Users\\emeris\\source\\repos\\ST10484350_PROG6212_POE_Part1\\RaceDay.API\\RaceDay.MVC\\RaceDay.MVC.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\emeris\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.24.2-preview.1\\microsoft.visualstudio.azure.containers.tools.targets.1.24.2-preview.1.nupkg.sha512"
+  ],
   "logs": []
 }

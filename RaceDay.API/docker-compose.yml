@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  raceday-api:
+  raceday.api:
     image: raceday-api:latest
     build:
       context: .
@@ -11,7 +11,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
 
-  raceday-mvc:
+  raceday.mvc:
     image: raceday-mvc:latest
     build:
       context: .
@@ -20,6 +20,6 @@ services:
       - "5284:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ApiBaseUrl=http://raceday-api:8080/
+      - ApiBaseUrl=http://raceday.api:8080/
     depends_on:
-      - raceday-api
+      - raceday.api
