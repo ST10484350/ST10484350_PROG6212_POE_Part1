@@ -26,8 +26,10 @@ namespace RaceDay.MVC
             // registering the handler that forwards the api session cookie on outgoing requests
             builder.Services.AddTransient<ApiCookieHandler>();
 
-            // registering an httpclient so the MVC app communicates with the P2 API and not the db
-            var apiBaseUrl = builder.Configuration["ApiSettings:BaseUrl"] ?? "http://localhost:5101/";
+            // registering an httpclient so the MVC app communicates with the API and not the db
+            // reads from docker-compose 'ApiBaseUrl' if running in Docker, otherwise uses local fallback
+            var apiBaseUrl = builder.Configuration["ApiBaseUrl"] ?? "http://localhost:5101/";
+
             builder.Services.AddHttpClient("RaceDayApi", client =>
             {
                 client.BaseAddress = new Uri(apiBaseUrl);
